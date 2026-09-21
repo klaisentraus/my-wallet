@@ -1,0 +1,533 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f4f3ee" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#14161a" media="(prefers-color-scheme: dark)">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="icon-32.png">
+<title>Guia do My Wallet</title>
+<style>
+:root{
+  --bg:#f4f3ee; --surface:#ffffff; --surface2:#faf9f5; --sunken:#eeece4;
+  --text:#1b1a17; --muted:#57564f; --faint:#8f8d84; --line:#e4e1d7;
+  --accent:#0d7a6f; --accent-ink:#065048; --accent-soft:#dcefea;
+  --out:#c25239; --out-soft:#fbe5df;
+  --warn:#a8711a; --warn-soft:#fbeed6;
+  --save:#8a6bc4; --save-soft:#ece4f8;
+  --cat:#1b1b24; --cat-paw:#2f2f3c; --cat-ear:#e8aab4; --cat-nose:#e2899b;
+  --cat-eye:#f4b73f; --cat-line:#cfccc3; --cat-halo:#e9e5d9; --cat-rim:transparent;
+  --shadow:0 1px 2px rgba(24,22,17,.05), 0 6px 18px -8px rgba(24,22,17,.16);
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){
+  :root{
+    --bg:#14161a; --surface:#1d2026; --surface2:#22252c; --sunken:#282c34;
+    --text:#eceae4; --muted:#b2b4ae; --faint:#82847c; --line:#2f333b;
+    --accent:#4ec5b2; --accent-ink:#a9e5db; --accent-soft:#17342f;
+    --out:#f08a6c; --out-soft:#3a231c;
+    --warn:#e0aa54; --warn-soft:#372a15;
+    --save:#b79df0; --save-soft:#2a2338;
+    --cat:#0e0e15; --cat-paw:#20202b; --cat-ear:#c98d98; --cat-nose:#c47b8c;
+    --cat-line:#7e7b74; --cat-halo:#272b34; --cat-rim:rgba(255,255,255,.55);
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 8px 22px -10px rgba(0,0,0,.6);
+    color-scheme:dark;
+  }
+  .cat{filter:drop-shadow(0 0 1.6px var(--cat-rim)) drop-shadow(0 0 7px rgba(255,255,255,.10))}
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--bg); color:var(--text);
+  font:16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  -webkit-font-smoothing:antialiased}
+.wrap{max-width:660px; margin:0 auto; padding:0 20px 80px}
+.cat{display:block; width:100%; height:auto}
+
+header{padding:calc(env(safe-area-inset-top) + 34px) 0 6px; text-align:center}
+header .stage{position:relative; display:grid; place-items:center; margin-bottom:14px}
+header .stage::before{content:''; position:absolute; width:132px; height:132px; border-radius:50%;
+  background:var(--cat-halo)}
+header .stage svg{position:relative; width:112px}
+.px{display:block; width:64px; height:64px; background:url(cat.png) no-repeat;
+  transform-origin:top left; image-rendering:pixelated; image-rendering:crisp-edges}
+.pxw{display:block; position:relative}
+.px-idle{animation:px_idle 1.4s steps(1,end) infinite}
+@keyframes px_idle{0%{background-position-x:-0px}16.6667%{background-position-x:-64px}33.3333%{background-position-x:-128px}50%{background-position-x:-192px}66.6667%{background-position-x:-256px}83.3333%{background-position-x:-320px}}
+@media (prefers-reduced-motion:reduce){ .px{animation:none} }
+h1{font-size:30px; line-height:1.15; letter-spacing:-.025em; margin:0; font-weight:700}
+header p{color:var(--muted); margin:10px auto 0; max-width:44ch; font-size:15.5px}
+
+/* o arranque: a unica coisa a fazer no primeiro dia */
+.rapido{background:var(--surface); border:1px solid var(--line); border-radius:18px;
+  padding:20px 20px 4px; margin:28px 0 10px; box-shadow:var(--shadow)}
+.rapido .tit{font-size:11.5px; text-transform:uppercase; letter-spacing:.09em;
+  color:var(--accent); font-weight:700}
+.rapido h2{font-size:21px; margin:6px 0 0; letter-spacing:-.022em; line-height:1.2}
+.rapido>p{color:var(--muted); font-size:15px; margin-top:9px}
+.rapido ol{list-style:none; counter-reset:r; margin:18px 0 0; padding:0}
+.rapido li{counter-increment:r; position:relative; padding:0 0 17px 40px;
+  font-size:15.5px; line-height:1.55}
+.rapido li::before{content:counter(r); position:absolute; left:0; top:1px;
+  width:26px; height:26px; border-radius:50%; background:var(--accent-soft);
+  color:var(--accent-ink); display:grid; place-items:center; font-size:13px; font-weight:700}
+.rapido li span{display:block; color:var(--muted); font-size:14.5px; margin-top:3px}
+.rapido .cola{border-top:1px solid var(--line); margin-top:2px; padding:14px 0 16px;
+  color:var(--muted); font-size:14.5px}
+.rapido .cola b{color:var(--text)}
+
+nav.idx{background:var(--surface); border:1px solid var(--line); border-radius:16px;
+  padding:16px 18px; margin:28px 0 8px; box-shadow:var(--shadow)}
+nav.idx b{display:block; font-size:11.5px; text-transform:uppercase; letter-spacing:.09em;
+  color:var(--faint); margin-bottom:10px}
+nav.idx ol{margin:0; padding-left:22px}
+nav.idx li{margin:5px 0}
+nav.idx a{color:var(--text); text-decoration:none; border-bottom:1px solid var(--line)}
+nav.idx a:hover{border-color:var(--accent); color:var(--accent)}
+
+section{padding-top:38px; scroll-margin-top:12px}
+h2{font-size:22px; line-height:1.25; letter-spacing:-.02em; margin:0 0 4px; font-weight:680;
+  display:flex; align-items:baseline; gap:11px}
+h2 .n{font-size:13px; font-weight:700; color:var(--accent); background:var(--accent-soft);
+  border-radius:99px; padding:3px 10px; flex:none; letter-spacing:0}
+h3{font-size:16.5px; margin:24px 0 6px; font-weight:660}
+p{margin:12px 0}
+ul{margin:12px 0; padding-left:22px}
+li{margin:7px 0}
+b,strong{font-weight:650}
+.muted{color:var(--muted)}
+.lead{color:var(--muted); font-size:15.5px; margin-top:8px}
+
+.card{background:var(--surface); border:1px solid var(--line); border-radius:16px;
+  padding:16px 18px; margin:18px 0; box-shadow:var(--shadow)}
+.card p:first-child{margin-top:0} .card p:last-child{margin-bottom:0}
+
+.note{border-radius:14px; padding:14px 16px; margin:18px 0; font-size:15px; line-height:1.6}
+.note.ok{background:var(--accent-soft); color:var(--accent-ink)}
+.note.warn{background:var(--warn-soft); color:var(--warn)}
+.note.bad{background:var(--out-soft); color:var(--out)}
+.note b{font-weight:700}
+.note p{margin:8px 0 0} .note p:first-child{margin-top:0}
+
+.ui{display:inline-flex; align-items:center; gap:5px; background:var(--sunken);
+  border:1px solid var(--line); border-radius:7px; padding:1px 8px; font-size:14px;
+  font-weight:600; white-space:nowrap}
+.plus{display:inline-grid; place-items:center; width:24px; height:24px; border-radius:50%;
+  background:var(--accent); color:#fff; vertical-align:-6px; margin:0 1px}
+@media (prefers-color-scheme:dark){ .plus{color:#06231f} }
+.plus svg{width:12px; height:12px}
+/* `.rapido li span` pinta e quebra qualquer span da lista; o botao + nao entra nisso */
+.rapido li .plus{display:inline-grid; color:#fff; margin:0 1px}
+@media (prefers-color-scheme:dark){ .rapido li .plus{color:#06231f} }
+
+table{width:100%; border-collapse:collapse; margin:16px 0; font-size:15px}
+th,td{text-align:left; padding:9px 10px; border-bottom:1px solid var(--line); vertical-align:top}
+th{font-size:11.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--faint); font-weight:650}
+td:first-child{font-weight:620; white-space:nowrap; padding-right:16px}
+
+.steps{counter-reset:s; list-style:none; padding:0; margin:16px 0}
+.steps li{counter-increment:s; position:relative; padding-left:42px; margin:14px 0}
+.steps li::before{content:counter(s); position:absolute; left:0; top:0;
+  width:27px; height:27px; border-radius:50%; background:var(--accent); color:#fff;
+  display:grid; place-items:center; font-size:13.5px; font-weight:700}
+@media (prefers-color-scheme:dark){ .steps li::before{color:#06231f} }
+
+.pawline{display:flex; align-items:center; gap:9px; margin:34px 0 0; color:var(--faint)}
+.pawline svg{width:15px; height:15px; flex:none}
+.pawline i{flex:1; height:1px; background:var(--line); font-style:normal}
+
+footer{margin-top:46px; padding-top:22px; border-top:1px solid var(--line);
+  font-size:13px; color:var(--faint); line-height:1.6}
+footer a{color:var(--accent)}
+.volver{display:inline-flex; align-items:center; gap:8px; margin-top:20px; padding:13px 20px;
+  border-radius:13px; background:var(--accent); color:#fff; text-decoration:none; font-weight:650}
+@media (prefers-color-scheme:dark){ .volver{color:#06231f} }
+</style>
+</head>
+<body>
+
+<svg style="position:absolute;width:0;height:0" aria-hidden="true"><defs>
+<symbol id="cat-sit" viewBox="0 0 120 120">
+  <path d="M88 102 C110 102 116 82 104 70 C98 64 89 66 88 73" fill="none" stroke="var(--cat)" stroke-width="9" stroke-linecap="round"/>
+  <path d="M60 50 C40 50 30 72 30 92 C30 103 41 108 60 108 C79 108 90 103 90 92 C90 72 80 50 60 50 Z" fill="var(--cat)"/>
+  <path d="M33 33 L28 7 L52 21 Z" fill="var(--cat)"/>
+  <path d="M87 33 L92 7 L68 21 Z" fill="var(--cat)"/>
+  <circle cx="60" cy="45" r="26" fill="var(--cat)"/>
+  <path d="M36 29 L33 15 L46 23 Z" fill="var(--cat-ear)"/>
+  <path d="M84 29 L87 15 L74 23 Z" fill="var(--cat-ear)"/>
+  <ellipse cx="50" cy="43" rx="6" ry="7.6" fill="var(--cat-eye)"/>
+  <ellipse cx="70" cy="43" rx="6" ry="7.6" fill="var(--cat-eye)"/>
+  <ellipse cx="50" cy="43" rx="2.1" ry="6.2" fill="#141118"/>
+  <ellipse cx="70" cy="43" rx="2.1" ry="6.2" fill="#141118"/>
+  <circle cx="52.2" cy="39.6" r="1.5" fill="#fff" opacity=".9"/>
+  <circle cx="72.2" cy="39.6" r="1.5" fill="#fff" opacity=".9"/>
+  <path d="M56.6 53 L63.4 53 L60 57.2 Z" fill="var(--cat-nose)"/>
+  <path d="M60 57.2 C60 60.4 57 61.4 55 59.2 M60 57.2 C60 60.4 63 61.4 65 59.2" fill="none" stroke="var(--cat-line)" stroke-width="1.5" stroke-linecap="round"/>
+  <g stroke="var(--cat-line)" stroke-width="1.3" stroke-linecap="round" opacity=".7">
+    <path d="M45 51 L27 47"/><path d="M45 54.5 L28 56"/>
+    <path d="M75 51 L93 47"/><path d="M75 54.5 L92 56"/>
+  </g>
+  <ellipse cx="47" cy="104" rx="9.5" ry="5" fill="var(--cat-paw)"/>
+  <ellipse cx="73" cy="104" rx="9.5" ry="5" fill="var(--cat-paw)"/>
+</symbol>
+<symbol id="paw" viewBox="0 0 24 24">
+  <ellipse cx="12" cy="16" rx="6.4" ry="5.4" fill="currentColor"/>
+  <ellipse cx="5" cy="10" rx="2.7" ry="3.5" fill="currentColor"/>
+  <ellipse cx="19" cy="10" rx="2.7" ry="3.5" fill="currentColor"/>
+  <ellipse cx="9.2" cy="5" rx="2.7" ry="3.6" fill="currentColor"/>
+  <ellipse cx="15.8" cy="5" rx="2.7" ry="3.6" fill="currentColor"/>
+</symbol>
+<symbol id="ic-plus" viewBox="0 0 24 24">
+  <path d="M12 5.2V18.8M5.2 12H18.8" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round"/>
+</symbol>
+</defs></svg>
+
+<div class="wrap">
+
+<header>
+  <div class="stage"><span class="pxw" style="width:128px;height:128px"><i class="px px-idle" style="transform:scale(2)"></i></span></div>
+  <h1>Como usar o My Wallet</h1>
+  <p>Um guia curto para tirar o máximo do app. <b>Não precisa ler tudo de uma vez</b>,
+     nem entender tudo no primeiro dia: o app vai mostrando as coisas aos poucos,
+     conforme você precisa delas.</p>
+</header>
+
+<div class="rapido">
+  <div class="tit">Comece por aqui</div>
+  <h2>Os primeiros 10 minutos</h2>
+  <p>Se você fizer só isto hoje, o app já funciona. O resto pode esperar.</p>
+  <ol>
+    <li>Abra o app do banco e ponha o saldo em <b>Quanto você tem hoje</b>.
+      <span>É o ponto de partida. Você põe uma vez só e nunca mais: daí em diante o app
+      soma e subtrai tudo o que você anotar.</span></li>
+    <li>Toque no <span class="plus"><svg><use href="#ic-plus"/></svg></span> e anote um gasto de hoje.
+      <span>Qualquer um. O valor, a categoria, pronto.</span></li>
+    <li>Anote o que entra.
+      <span>Salário, freela, o que for. Mesmo padrão: <span class="plus"><svg><use href="#ic-plus"/></svg></span>, Entrada, valor.</span></li>
+    <li>Cadastre suas contas fixas em <span class="ui">Plano › Contas</span>.
+      <span>Aluguel, internet, assinaturas. Elas passam a aparecer sozinhas todo mês,
+      com data, e o app já desconta antes de dizer quanto você pode gastar.</span></li>
+    <li>Cadastre suas dívidas em <span class="ui">Plano › Dívidas</span>.
+      <span>Com a taxa de juros. É a partir dela que o app decide o que atacar primeiro.</span></li>
+  </ol>
+  <div class="cola"><b>Só isso.</b> A partir de agora é anotar na hora em que o dinheiro se move.
+    Cinco segundos por vez, e as telas de Plano, Investir e Aprender vão fazendo sentido sozinhas.</div>
+</div>
+
+<nav class="idx">
+  <b>O que tem aqui</b>
+  <ol>
+    <li><a href="#q1">O que é e o que não é</a></li>
+    <li><a href="#q2">Pôr na tela de início do celular</a></li>
+    <li><a href="#q3">Anotar: o botão verde</a></li>
+    <li><a href="#q4">Início: o que aqueles números dizem</a></li>
+    <li><a href="#q5">Contas com data e o que está por entrar</a></li>
+    <li><a href="#q6">Plano: quanto guardar e em que ordem</a></li>
+    <li><a href="#q7">Investir: as calculadoras</a></li>
+    <li><a href="#q8">Aprender: pergunte o que quiser</a></li>
+    <li><a href="#q9">O backup</a></li>
+    <li><a href="#q10">Para não largar na primeira semana</a></li>
+  </ol>
+</nav>
+
+<section id="q1">
+  <h2><span class="n">1</span> O que é e o que não é</h2>
+  <p class="lead">Um app de controle de gastos que funciona inteiro no seu celular.</p>
+
+  <p><b>O que ele é:</b> um lugar para registrar o que entra e o que sai, ver para onde o
+  dinheiro está indo, acompanhar dívidas e metas, e receber uma leitura honesta de quanto
+  dá para gastar por dia sem furar o mês.</p>
+
+  <p><b>O que ele não é:</b> não é conta, não é banco, não se conecta com o seu banco e não
+  lê seu extrato. Tudo o que ele sabe é o que você digita. Em compensação, nenhum dado sai
+  do seu aparelho — não existe cadastro, servidor, nem ninguém do outro lado.</p>
+
+  <div class="note ok">
+    <p><b>Sem internet.</b> Depois de aberto uma vez, funciona no avião, no metrô, em
+    qualquer lugar. A internet só serve para baixar uma versão nova.</p>
+  </div>
+
+  <div class="note warn">
+    <p><b>O lado ruim de ficar só no seu aparelho:</b> se você limpar os dados do navegador,
+    trocar de celular ou desinstalar, os dados vão junto. Por isso existe a seção 9.</p>
+  </div>
+</section>
+
+<section id="q2">
+  <h2><span class="n">2</span> Pôr na tela de início do celular</h2>
+  <p class="lead">Ele vira um ícone como qualquer outro app, sem barra de navegador.</p>
+
+  <h3>iPhone</h3>
+  <ol class="steps">
+    <li>Abra o link no <b>Safari</b> (no Chrome não aparece a opção).</li>
+    <li>Toque no botão de compartilhar — o quadradinho com a seta para cima.</li>
+    <li>Role e escolha <b>Adicionar à Tela de Início</b>.</li>
+  </ol>
+
+  <h3>Android</h3>
+  <ol class="steps">
+    <li>Abra o link no <b>Chrome</b>.</li>
+    <li>Menu dos três pontinhos, no canto.</li>
+    <li><b>Adicionar à tela inicial</b> ou <b>Instalar app</b>.</li>
+  </ol>
+
+  <p>Depois disso ele abre em tela cheia e você nem lembra que era um site.</p>
+
+  <div class="note">
+    <p><b>Atualizações.</b> Quando sair uma versão nova, ela chega sozinha na próxima vez
+    que você abrir com internet. Não precisa reinstalar. Se mudou algo e você não está vendo,
+    vá em <span class="ui">Mais</span> e toque em <b>Tem versão nova?</b>. A versão que você
+    está usando aparece ali embaixo.</p>
+  </div>
+</section>
+
+<section id="q3">
+  <h2><span class="n">3</span> Anotar: o botão verde</h2>
+  <p class="lead">O <span class="plus"><svg><use href="#ic-plus"/></svg></span> no meio da barra de baixo. É por onde tudo entra.</p>
+
+  <p>Abre uma ficha com três abas no topo:</p>
+
+  <table>
+    <tr><td>Gasto</td><td>Dinheiro saindo. Mercado, aluguel, gasolina, aquele lanche.</td></tr>
+    <tr><td>Entrada</td><td>Dinheiro chegando. Salário, freela, venda, presente.</td></tr>
+    <tr><td>Guardar</td><td>Dinheiro que continua seu, mas sai de circulação: foi para a
+      reserva ou para uma meta. Não é gasto — é mudança de lugar.</td></tr>
+  </table>
+
+  <p>Digite o valor no teclado, escolha a categoria e pronto. A data vem como hoje;
+  se for de outro dia, é só mudar.</p>
+
+  <h3>Para fechar a ficha</h3>
+  <p>Toque naquela barrinha cinza no topo dela, ou arraste a ficha para baixo. Os dois funcionam.</p>
+
+  <h3>A categoria importa mais do que parece</h3>
+  <p>O app separa gastos <b>indispensáveis</b> (moradia, mercado, transporte, saúde, contas)
+  dos <b>que dá para cortar</b> (comer fora, compras, lazer, assinaturas). É essa divisão que
+  faz a tela do Plano dizer algo útil em vez de um número genérico.</p>
+
+  <div class="note ok">
+    <p><b>Anote na hora.</b> É o único hábito que precisa pegar. Deixar para o domingo não
+    funciona para ninguém: no domingo você não lembra da terça, e o que não é lembrado não é
+    anotado.</p>
+  </div>
+
+  <h3>Compras parceladas</h3>
+  <p>Comprou em 10x? Não anote como um gasto de 10 vezes o valor hoje. Cadastre em
+  <span class="ui">Plano › Dívidas</span>, escolha <b>Parcelado</b>, diga quantas parcelas e
+  quando cai a primeira. O app espalha as parcelas pelos meses certos e mostra quanto do mês
+  que vem já está comprometido antes de você gastar.</p>
+</section>
+
+<section id="q4">
+  <h2><span class="n">4</span> Início: o que aqueles números dizem</h2>
+  <p class="lead">A primeira tela responde duas perguntas: quanto eu tenho e quanto posso gastar.</p>
+
+  <h3>Você tem agora</h3>
+  <p>É o saldo que você pôs no começo, mais tudo o que entrou, menos tudo o que saiu e tudo o
+  que você guardou. Deveria bater com o app do banco — se afastar muito, é porque tem coisa
+  não anotada.</p>
+
+  <div class="note">
+    <p>Afastou demais? <span class="ui">Mais › Corrigir meu ponto de partida</span>. Você põe
+    o saldo real de hoje e segue em frente, sem ter que caçar o que faltou.</p>
+  </div>
+
+  <h3>Seu ritmo</h3>
+  <p>Quanto dá para gastar <b>por dia</b> até o fim do mês. E é o número honesto: o app já tirou
+  dali as contas com data que ainda não foram pagas. Não é «o que tem na conta dividido pelos
+  dias» — é o que sobra depois que o mês fizer o que ele já vai fazer.</p>
+  <p>Se você tem entradas previstas que ainda não caíram, aparece uma segunda linha com o
+  número maior que valeria <b>depois</b> que elas entrarem. Enquanto não entrarem, vale o de cima.</p>
+
+  <h3>Entrou · Gastou · Guardou</h3>
+  <p>Os três números do mês corrente, só dele. Servem para ver o mês; o saldo de cima é a sua
+  vida inteira no app.</p>
+
+  <h3>Seu próximo passo</h3>
+  <p>O app olha a sua situação e mostra <b>um</b> objetivo de cada vez, na ordem que faz mais
+  sentido. Não adianta cinco frentes abertas.</p>
+</section>
+
+<section id="q5">
+  <h2><span class="n">5</span> Contas com data e o que está por entrar</h2>
+  <p class="lead">Duas listas que tiram o «será que vai dar?» da cabeça.</p>
+
+  <h3>O que vem aí</h3>
+  <p>Junta suas contas fixas com as parcelas das dívidas do mês. Cada uma com o dia e um botão
+  <b>Pagar</b>. Quando você paga, toca ali: o app registra o gasto, baixa o saldo da dívida e
+  tira a conta da lista.</p>
+  <p>Atrasou? Ela continua aparecendo, marcada em vermelho, com quantos dias faz. E o «seu
+  ritmo» já considera que esse dinheiro vai sair hoje, não na data em que deveria ter saído.</p>
+
+  <h3>A entrar</h3>
+  <p>O outro lado. Cadastre em <span class="ui">Plano › A receber</span> o que você espera
+  receber: salário, um freela combinado, dinheiro que alguém te deve. Quando cair, toque em
+  <b>Caiu</b> — o app registra a entrada sozinho.</p>
+  <p>Enquanto não cair, o app trata como promessa, não como dinheiro. Isso é de propósito:
+  é o que impede você de gastar hoje o que ainda não chegou.</p>
+
+  <div class="note ok">
+    <p><b>Cadastre o que é recorrente uma vez só.</b> Contas fixas e entradas mensais se
+    repetem sozinhas todo mês. Você cadastra em janeiro e não pensa mais nisso.</p>
+  </div>
+</section>
+
+<section id="q6">
+  <h2><span class="n">6</span> Plano: quanto guardar e em que ordem</h2>
+  <p class="lead">A tela que responde «e agora, o que eu faço com o que sobra?».</p>
+
+  <h3>Quanto guardar por mês</h3>
+  <p>Vem de 20% do que você ganha, calculado em cima dos seus meses reais — não de um número
+  de fora. Dá para mudar a porcentagem lá embaixo, em <b>Ajustar meu plano</b>.</p>
+
+  <h3>A ordem importa</h3>
+  <p>É a parte mais útil da tela. A ordem é esta, e ela não é opinião:</p>
+  <ol class="steps">
+    <li><b>Reserva de R$ 3.000.</b> O primeiro degrau. É o que impede que um susto vire dívida
+      no cartão.</li>
+    <li><b>Matar as dívidas caras.</b> Qualquer coisa acima de 25% ao ano. No Brasil isso quer
+      dizer rotativo do cartão (passa de 400%) e cheque especial (~130%). Nenhum investimento
+      legal chega perto — pagar é, disparado, o melhor «rendimento» que existe para esse dinheiro.</li>
+    <li><b>Reserva completa.</b> De 3 a 6 meses dos seus gastos indispensáveis, em Tesouro Selic
+      ou CDB de liquidez diária.</li>
+    <li><b>Suas metas.</b> Viagem, curso, entrada de alguma coisa.</li>
+    <li><b>Longo prazo.</b> Com a base de pé, o que sobra pode ir para prazos maiores e mais risco.</li>
+  </ol>
+
+  <h3>As abas de cima</h3>
+  <table>
+    <tr><td>Metas</td><td>Cada meta com nome, valor e uma data opcional. Com a data, o app diz
+      quanto por mês você precisa guardar para chegar — e avisa se o ritmo atual não chega.</td></tr>
+    <tr><td>Dívidas</td><td>Ordenadas da taxa maior para a menor, que é a ordem de pagar.
+      Mostra quanto você paga só de juros por mês. Dá para quitar uma inteira de uma vez.</td></tr>
+    <tr><td>Contas</td><td>As fixas: aluguel, internet, assinaturas. Nome, valor e dia.</td></tr>
+    <tr><td>A receber</td><td>O que está previsto entrar.</td></tr>
+  </table>
+
+  <div class="note warn">
+    <p><b>O saldo das dívidas é uma estimativa.</b> De cada parcela que você registra, o app
+    desconta primeiro os juros do mês e baixa o saldo com o resto. Se você usar o cartão de novo
+    ou cobrarem alguma coisa extra, o real muda. Compare com a fatura de vez em quando e corrija.</p>
+  </div>
+</section>
+
+<section id="q7">
+  <h2><span class="n">7</span> Investir: as calculadoras</h2>
+  <p class="lead">Contas que respondem perguntas concretas, com números brasileiros de hoje.</p>
+
+  <p>Antes das calculadoras a tela mostra os números de referência — Selic, CDI, IPCA, poupança —
+  e faz a pergunta que importa: <b>o seu dinheiro está rendendo mais que a inflação?</b> Se não
+  está, ele encolhe mesmo com o saldo subindo.</p>
+
+  <h3>Quanto eu ganharia</h3>
+  <p>Um valor, uma taxa, um prazo. Mostra quanto rende e, mais importante, quanto rende
+  <b>descontando a inflação</b>. É o ganho de verdade.</p>
+
+  <h3>Se eu guardar todo mês</h3>
+  <p>A conta que costuma surpreender. Mostra quanto você põe e quanto vira só de juros.
+  É onde dá para ver por que constância ganha de valor alto.</p>
+
+  <h3>Quanto sobra depois do imposto</h3>
+  <p>Essa é específica do Brasil e resolve uma dúvida real. Em CDB e Tesouro o IR come parte do
+  rendimento, com alíquota que cai com o tempo (22,5% até 180 dias, 20% até 360, 17,5% até 720,
+  15% depois). LCI e LCA são isentas.</p>
+  <p>A calculadora faz as duas contas e te diz uma coisa prática: <b>quanto uma LCI precisaria
+  pagar para empatar</b> com o CDB que te ofereceram. Se oferecerem menos que isso, o CDB tributado
+  ganha mesmo com o número parecendo menor.</p>
+
+  <div class="note">
+    <p>Os números de referência são do mês em que o app foi feito. Eles envelhecem: confira na
+    fonte e atualize a inflação lá embaixo quando fizer sentido.</p>
+  </div>
+</section>
+
+<section id="q8">
+  <h2><span class="n">8</span> Aprender: pergunte o que quiser</h2>
+  <p class="lead">48 temas, com busca, tudo offline.</p>
+
+  <p>Escreva a dúvida na caixa de cima como você falaria: «vale a pena a poupança?»,
+  «como sair do rotativo», «13º cai quando», «posso sacar o FGTS». A busca ignora acento e
+  maiúscula e ordena por relevância.</p>
+
+  <p>Os temas cobrem o que aparece de verdade na vida financeira aqui: rotativo, cheque especial,
+  Serasa e negativação, consignado, portabilidade de dívida, Tesouro Direto, CDB, LCI e LCA, FGC,
+  IR regressivo, IOF, PIX e golpes, poupança, previdência, 13º, FGTS, férias, INSS, rescisão,
+  CLT contra PJ e MEI.</p>
+
+  <p>Cada resposta começa com uma linha direta e abre para o texto completo se você quiser o porquê.</p>
+</section>
+
+<section id="q9">
+  <h2><span class="n">9</span> O backup</h2>
+  <p class="lead">A parte chata e a mais importante deste guia.</p>
+
+  <p>Seus dados existem <b>só neste aparelho</b>. Ninguém mais vê — e ninguém mais tem uma cópia.
+  Se você limpar os dados do navegador, trocar de celular ou desinstalar, acabou.</p>
+
+  <p>Em <span class="ui">Mais</span> tem três formas de resolver isso:</p>
+
+  <table>
+    <tr><td>Mandar no WhatsApp</td><td>A mais rápida. Manda o arquivo para você mesmo.
+      Faça isso de vez em quando e pronto.</td></tr>
+    <tr><td>Baixar</td><td>Salva um arquivo pequeno com todos os seus dados. Bom para o Drive.</td></tr>
+    <tr><td>Baixar o app com os dados dentro</td><td>A mais segura de todas: baixa o app
+      <b>inteiro</b>, com seus dados embutidos. Abre em qualquer celular ou computador e está
+      tudo lá, igualzinho, mesmo sem internet.</td></tr>
+  </table>
+
+  <p>Para voltar: <span class="ui">Mais › Restaurar</span>, abra o arquivo ou cole o texto da cópia.</p>
+
+  <div class="note bad">
+    <p><b>Restaurar substitui.</b> O que estiver no aparelho agora é trocado pelo que está na
+    cópia. O app avisa e pede confirmação antes.</p>
+  </div>
+
+  <div class="note ok">
+    <p><b>Uma regra simples:</b> toda vez que fizer uma dezena de lançamentos, mande a cópia no
+    WhatsApp. Leva um segundo e te salva de perder meses de registro.</p>
+  </div>
+</section>
+
+<section id="q10">
+  <h2><span class="n">10</span> Para não largar na primeira semana</h2>
+  <p class="lead">Quatro coisas que fazem diferença entre usar por duas semanas e usar por anos.</p>
+
+  <h3>Anote na hora, não depois</h3>
+  <p>Cinco segundos no momento do pagamento valem mais que uma hora no fim de semana tentando
+  lembrar. E no fim de semana você não lembra.</p>
+
+  <h3>Não tente ser exato no começo</h3>
+  <p>Arredondar é melhor que não anotar. Um mês de dados imperfeitos vale muito mais que zero
+  mês de dados perfeitos.</p>
+
+  <h3>Um mês ruim não apaga os bons</h3>
+  <p>Vai ter semana em que você esquece. Não tente reconstruir o que faltou — isso é chato o
+  bastante para fazer você largar de vez. Retome de hoje. Se o saldo se afastou do banco,
+  <span class="ui">Mais › Corrigir meu ponto de partida</span> e segue.</p>
+
+  <h3>Olhe justamente quando apertar</h3>
+  <p>O reflexo é parar de abrir o app quando as contas ficam feias. É exatamente aí que ele
+  serve para alguma coisa: um número que você não olha continua crescendo do mesmo jeito,
+  só que sem você saber.</p>
+
+  <div class="note ok">
+    <p><b>O objetivo não é gastar menos.</b> É parar de adivinhar. Quando você vê os números,
+    as decisões difíceis ficam óbvias sozinhas.</p>
+  </div>
+</section>
+
+<div class="pawline"><svg><use href="#paw"/></svg><i></i></div>
+
+<a class="volver" href="./">Abrir o My Wallet →</a>
+
+<footer>
+  <p><b>Aviso.</b> O My Wallet é uma ferramenta educativa e de organização pessoal.
+  Não é recomendação de investimento e não indica instituições nem produtos específicos.
+  Os números que aparecem no app são referências públicas da data em que ele foi feito e
+  mudam com o tempo: confirme na fonte antes de decidir, e para decisões grandes fale com um
+  profissional certificado — o registro dele dá para checar na CVM, de graça.</p>
+</footer>
+
+</div>
+</body>
+</html>
